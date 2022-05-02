@@ -3,7 +3,7 @@ Hack preventing
 
 
 
-First solution to preventing re-entrency hack:
+1) First technick to preventing re-entrency hack:
 
 To fix problem with re-entrency there is a pattern to follow in SOLIDITY that is called "CHECKS, EFFECTS, INTERACTIONS" - 
 and this tells us in which order we should do things. 
@@ -48,5 +48,28 @@ with "CHECKS, EFFECTS, INTERACTIONS" pattern in order to prevent re-entrency att
             }  
               
 It's very important to think about this pattern in all of functions
+
+2) Second technick to prevent re-entrency attack is to use modifier in our contract.
+      
+      The idea is to lock the contract while the function is executing. So the only a single function can be executed at a time. Very easy and efficient pattern
+      
+      
+           //We need an internal state variable to lock a contract
+           bool internal locked
+      
+           modifier noReentrant(){
+             require(!locked, "No re-entrancy");
+             locked = true;
+             _;
+             //After function execution is end we set locked equal to false
+             locked = false
+            }
+            
+           function withdraw(uint _amount) public noReentrant{
+              require( balance[msg.sender] >= _amount;                      // CHECKS
+              balance[msg.sender] -= _amount;                               // EFFECTS
+              (bool success,) = msg.sender.call{value: _amount}("");        // INTERACTION
+              if(!success){ balance[msg.sender] += _amount; }               // get back _amount if withdraw fail
+            }  
          
          
