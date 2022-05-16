@@ -51,7 +51,7 @@ It's very important to think about this pattern in all of functions
 
 2) Second technick to prevent re-entrency attack is to use modifier in our contract.
       
-      The idea is to lock the contract while the function is executing. So the only a single function can be executed at a time. Very easy and efficient pattern
+      The idea is to lock the contract while the function is executing. So the only a single function can be executed at a time. Very easy and efficient pattern.
       
       
            //We need an internal state variable to lock a contract
